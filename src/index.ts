@@ -1,4 +1,4 @@
-import { getInput, debug, setFailed, setOutput } from "@actions/core";
+import { getInput, setFailed } from "@actions/core";
 import { getOctokit } from "@actions/github";
 import { sendMessage } from "./helpers/sendMessage";
 
@@ -11,20 +11,7 @@ export const run = async () => {
   if (!slackChannelURL) throw new Error("Slack channel url not found");
   const octokit = getOctokit(token);
 
-  const ms: string = getInput("milliseconds");
-  debug(`Waiting ${ms} milliseconds ...`);
-
-  debug(new Date().toTimeString());
-  await wait(parseInt(ms, 10));
-  debug(new Date().toTimeString());
-
-  setOutput("time", new Date().toTimeString());
-
   await sendMessage(slackChannelURL);
-};
-
-export const wait = (milliseconds: number) => {
-  return new Promise<void>((resolve) => setTimeout(() => resolve(), milliseconds));
 };
 
 run()

@@ -1446,7 +1446,7 @@ exports.getUserAgent = getUserAgent;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.wait = exports.run = void 0;
+exports.run = void 0;
 const core_1 = __webpack_require__(470);
 const github_1 = __webpack_require__(469);
 const sendMessage_1 = __webpack_require__(117);
@@ -1458,19 +1458,9 @@ const run = async () => {
     if (!slackChannelURL)
         throw new Error("Slack channel url not found");
     const octokit = github_1.getOctokit(token);
-    const ms = core_1.getInput("milliseconds");
-    core_1.debug(`Waiting ${ms} milliseconds ...`);
-    core_1.debug(new Date().toTimeString());
-    await exports.wait(parseInt(ms, 10));
-    core_1.debug(new Date().toTimeString());
-    core_1.setOutput("time", new Date().toTimeString());
     await sendMessage_1.sendMessage(slackChannelURL);
 };
 exports.run = run;
-const wait = (milliseconds) => {
-    return new Promise((resolve) => setTimeout(() => resolve(), milliseconds));
-};
-exports.wait = wait;
 exports.run()
     .then(() => { })
     .catch((error) => {
